@@ -52,6 +52,8 @@
                                        Text="{Binding Synopsis}"/>
                             <TextBox Grid.Row="4"
                                        Text="{Binding Rating}"/>
+                            <TextBox Grid.Row="5"
+                                       Text="{Binding Disponible}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
