@@ -6,25 +6,40 @@
         x:Class="Gestionnaire_de_librairie_Jeux_Videos.MainWindow"
         Title="Gestionnaire_de_librairie_Jeux_Videos">
 
-    <StackPanel>
+        <ScrollViewer>
+        <StackPanel Orientation="Horizontal">
+
         <ListBox x:Name="GameList"
-                 Width="300"
-                 HorizontalAlignment="Left"
-                 MinHeight="300"
-                 Background="#BFFCB8"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                Width="300"
+                MinHeight="300"
+                Background="#B8EFFC"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="local:Game">
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                    <TextBlock Grid.Column="0"
+                        Text="{Binding Name}"/>
+                    <TextBlock Grid.Column="1"
+                        Text = "Disponible :"/>
+                    <CheckBox Grid.Column="2"
+                            IsChecked="{Binding Disponible, Mode=TwoWay}"/>
+        
+                        </Grid>
+            
+            
+            </DataTemplate>
+           
+           
+           
+            </ListBox.ItemTemplate>
 
-        </ListBox>
-    </StackPanel>
+
+</ListBox>
 
 
 
 
-
-
-
+</StackPanel>               
+</ScrollViewer>
 </Window>
-
-
-
 
