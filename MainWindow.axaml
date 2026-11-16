@@ -5,7 +5,24 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Gestionnaire_de_librairie_Jeux_Videos.MainWindow"
         Title="Gestionnaire_de_librairie_Jeux_Videos">
-    Welcome to Avalonia!
+
+    <StackPanel>
+        <ListBox x:Name="GameList"
+                 Width="300"
+                 HorizontalAlignment="Left"
+                 MinHeight="300"
+                 Background="#BFFCB8"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+        </ListBox>
+    </StackPanel>
+
+
+
+
+
+
+
 </Window>
 
 
