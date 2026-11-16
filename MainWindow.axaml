@@ -20,8 +20,9 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="local:Game">
                         <Grid ColumnDefinitions="Auto, *, Auto">
-                            <TextBlock Grid.Column="0"
-                                       Text="{Binding Name}"/>
+                            <Button Grid.Column="0"
+                                       Content="{Binding Name}"
+                                       Click="AfficherInfo" />
                             <TextBlock Grid.Column="1"
                                        Text = " Disponible :"/>
                             <CheckBox Grid.Column="2"
