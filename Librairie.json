@@ -1,12 +1,18 @@
-{
-  "Game": [
-    {
-      "Name": "Path of Exile",
-      "Date": "23 Octobre 2013",
-      "Genre": "Hack&slash",
-      "synopsis": "",
-      "Rating": "",
-      "Disponible": true
-    }
-  ]
-}
+[
+  {
+    "Name": "Path of Exile",
+    "Date": "23 Octobre 2013",
+    "Genre": "Hack&slash",
+    "synopsis": "Path of Exile takes place in a dark fantasy world, where the government of the island nation of Oriath exiles people to the continent of Wraeclast, a ruined continent home to many ancient gods.",
+    "Rating": "7,8/10",
+    "Disponible": true
+  },
+  {
+    "Name": "Cyberpunk 2077",
+    "Date": "9 décembre 2020",
+    "Genre": "RPG",
+    "synopsis": "L'histoire de Cyberpunk 2077 se déroule en 2077 dans la mégapole dystopique de Night City, en Californie, dominée par les méga-corporations (les « corpos »).",
+    "Rating": "7.3/10",
+    "Disponible": true
+  }
+]
