@@ -21,8 +21,8 @@
                     <DataTemplate x:DataType="local:Game">
                         <Grid ColumnDefinitions="Auto, *, Auto">
                             <Button Grid.Column="0"
-                                       Content="{Binding Name}"
-                                       Click="AfficherInfo" />
+                                    Content="{Binding Name}"
+                                    Click="AfficherInfo" />
                             <TextBlock Grid.Column="1"
                                        Text = " Disponible :"/>
                             <CheckBox Grid.Column="2"
@@ -33,10 +33,9 @@
             </ListBox>
 
 
-            
-            <ListBox x:Name="GameInfos"
+
+            <ListBox x:Name="GameInfo"
                      ItemsSource="{Binding GameInfos}"
-                     Width="300"
                      MinHeight="300"
                      Background="#E09F14"
                      ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -48,23 +47,17 @@
                             <TextBlock Grid.Row="1"
                                        Text = "{Binding Date}"/>
                             <TextBox Grid.Row="2"
-                                       Text="{Binding Genre}"/>
+                                     Text="{Binding Genre}"/>
                             <TextBox Grid.Row="3"
-                                       Text="{Binding Synopsis}"/>
+                                     Text="{Binding Synopsis}"/>
                             <TextBox Grid.Row="4"
-                                       Text="{Binding Rating}"/>
+                                     Text="{Binding Rating}"/>
                             <TextBox Grid.Row="5"
-                                       Text="{Binding Disponible}"/>
+                                     Text="{Binding Disponible}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
-
-
-
-
-
         </StackPanel>
     </ScrollViewer>
 </Window>
