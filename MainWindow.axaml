@@ -19,7 +19,7 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="local:Game">
-                        <Grid ColumnDefinitions="Auto, *, Auto">
+                        <Grid ColumnDefinitions="Auto, *, 30,Auto">
                             <Button Grid.Column="0"
                                     Content="{Binding Name}"
                                     Click="AfficherInfo" />
@@ -27,6 +27,9 @@
                                        Text = " Disponible :"/>
                             <CheckBox Grid.Column="2"
                                       IsChecked="{Binding Disponible, Mode=TwoWay}"/>
+                            <Button Grid.Column="3"
+                                    Content="supprimer"
+                                    Click="Supprimer" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -59,25 +62,26 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <StackPanel Spacing="10">
+                <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Top">
+                    <TextBox x:Name="SearchBox"
+                             Width="200"
+                             PlaceholderText="Rechercher un jeu..." />
 
-            <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Top">
-                <TextBox x:Name="SearchBox"
-                         Width="200"
-                         PlaceholderText="Rechercher un jeu..." />
+                    <Button Content="Rechercher"
+                            Click="Rechercher" />
 
-                <Button Content="Rechercher"
-                        Click="Rechercher" />
-                <Button Content="Ajouter"
-                        Click="Ajouter" />
+                </StackPanel>
+                <StackPanel x:Name="Ajouterinfos" Spacing="5" VerticalAlignment="Top" IsVisible="False">
+                    <TextBox x:Name="GameName" PlaceholderText="Name?" />
+                    <TextBox x:Name="GameDate" PlaceholderText="Date de sortie?" />
+                    <TextBox x:Name="GameGenre" PlaceholderText="Genre?" />
+                    <TextBox x:Name="GameSynopsis" PlaceholderText="Synopsis?" />
+                    <TextBox x:Name="GameRating" PlaceholderText="Rating?" />
+                    <Button Content="Ajouter"
+                            Click="Ajouter" />
+                </StackPanel>
             </StackPanel>
-            <StackPanel  Spacing="5" VerticalAlignment="Top">
-                <TextBox x:Name="GameName"/>
-                <TextBox x:Name="GameDate"/>
-                <TextBox x:Name="GameGenre"/>
-                <TextBox x:Name="GameSynopsis"/>
-                <TextBox x:Name="GameRating"/>
-            </StackPanel>
-
 
 
         </StackPanel>

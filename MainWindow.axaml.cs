@@ -58,12 +58,20 @@ public partial class MainWindow : Window
 
     }
     private void ClikCheck(object? sender, RoutedEventArgs e)
-{
-    if (sender is not CheckBox { DataContext: Game game } cb) return;
+    {
+        if (sender is not CheckBox { DataContext: Game game } cb) return;
 
-    game.Disponible = cb.IsChecked == true; 
-    SauvegarderJeux();                      
-}
+        game.Disponible = cb.IsChecked == true;
+        SauvegarderJeux();
+
+    }
+    private void Supprimer(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button {DataContext : Game game}) return;
+        Games.Remove(game);
+        SearchResults.Remove(game);
+        SauvegarderJeux();
+    }
     private void ChargerJeux()
     {
         string path = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
