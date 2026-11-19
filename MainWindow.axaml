@@ -21,8 +21,8 @@
                     <DataTemplate x:DataType="local:Game">
                         <Grid ColumnDefinitions="Auto, *, Auto">
                             <Button Grid.Column="0"
-                                       Content="{Binding Name}"
-                                       Click="AfficherInfo" />
+                                    Content="{Binding Name}"
+                                    Click="AfficherInfo" />
                             <TextBlock Grid.Column="1"
                                        Text = " Disponible :"/>
                             <CheckBox Grid.Column="2"
@@ -33,7 +33,7 @@
             </ListBox>
 
 
-            
+
             <ListBox x:Name="GameInfos"
                      ItemsSource="{Binding GameInfos}"
                      Width="300"
@@ -48,29 +48,29 @@
                             <TextBlock Grid.Row="1"
                                        Text = "{Binding Date}"/>
                             <TextBox Grid.Row="2"
-                                       Text="{Binding Genre}"/>
+                                     Text="{Binding Genre}"/>
                             <TextBox Grid.Row="3"
-                                       Text="{Binding Synopsis}" TextWrapping="Wrap"/>
+                                     Text="{Binding Synopsis}" TextWrapping="Wrap"/>
                             <TextBox Grid.Row="4"
-                                       Text="{Binding Rating}"/>
+                                     Text="{Binding Rating}"/>
                             <TextBox Grid.Row="5"
-                                       Text="{Binding Disponible}"/>
+                                     Text="{Binding Disponible}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
             <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Top">
-    <TextBox x:Name="SearchBox" 
-             Width="200" 
-             PlaceholderText="Rechercher un jeu..." />
-             
-    <Button Content="Rechercher" 
-            Click="Rechercher" />
-    <Button Content="Ajouter"
-            Click="Ajouter" />
+                <TextBox x:Name="SearchBox"
+                         Width="200"
+                         PlaceholderText="Rechercher un jeu..." />
 
-</StackPanel>
+                <Button Content="Rechercher"
+                        Click="Rechercher" />
+                <Button Content="Ajouter"
+                        Click="Ajouter" />
+
+            </StackPanel>
 
 
         </StackPanel>

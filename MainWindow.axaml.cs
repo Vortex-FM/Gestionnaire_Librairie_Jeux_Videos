@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Net.Http;
+using System.Linq;
 namespace Gestionnaire_de_librairie_Jeux_Videos;
 
 public class Game : INotifyPropertyChanged 
@@ -34,6 +36,8 @@ public partial class MainWindow : Window
 {
     public ObservableCollection<Game> Games { get; } = new();
     public ObservableCollection<string> GameInfos { get; } = new();
+    public ObservableCollection<Game> SearchResults { get; } = new();
+    private static string LibPath = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
     public MainWindow()
     {
         InitializeComponent();
@@ -68,12 +72,29 @@ public partial class MainWindow : Window
                 foreach (var g in game) Games.Add(g);
             }
         }
-        catch(JsonException ex)
+        catch (JsonException ex)
         {
             Console.WriteLine($"JSON invalide : {ex.Message}");
         }
     }
+    private  void Rechercher(object? sender, RoutedEventArgs e)
+    {
+        var q = SearchBox.Text?.Trim();
+        if (string.IsNullOrEmpty(q)) return;        
+        SearchResults.Clear();
+        foreach (var g in q) SearchResults.Add(g);
+        
+    }
+    private void Ajouter(object? sender, RoutedEventArgs e)
+    {
+        
+    }
+       
 
-
+    private void SauvegarderJeux()
+    {
+        var json = JsonSerializer.Serialize(Games, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(LibPath, json);
+    }
+    
 }
-
