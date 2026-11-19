@@ -57,6 +57,13 @@ public partial class MainWindow : Window
         GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
 
     }
+    private void ClikCheck(object? sender, RoutedEventArgs e)
+{
+    if (sender is not CheckBox { DataContext: Game game } cb) return;
+
+    game.Disponible = cb.IsChecked == true; 
+    SauvegarderJeux();                      
+}
     private void ChargerJeux()
     {
         string path = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
