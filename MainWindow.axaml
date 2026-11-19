@@ -69,8 +69,15 @@
                         Click="Rechercher" />
                 <Button Content="Ajouter"
                         Click="Ajouter" />
+                <TextBlock x:Name="GameName"/>
+                <TextBlock x:Name="GameDate"/>
+                <TextBlock x:Name="GameGenre"/>
+                <TextBlock x:Name="GameSynopsis"/>
+                <TextBlock x:Name="GameRating"/>
 
             </StackPanel>
+
+
         </StackPanel>
     </ScrollViewer>
 </Window>
