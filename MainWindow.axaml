@@ -71,8 +71,6 @@
                         Click="Ajouter" />
 
             </StackPanel>
-
-
         </StackPanel>
     </ScrollViewer>
 </Window>

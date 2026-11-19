@@ -8,8 +8,8 @@ using System.Text.Json.Serialization;
 using System;
 using System.IO;
 using System.Text.Json;
-using System.Net.Http;
 using System.Linq;
+using Avalonia.Metadata;
 namespace Gestionnaire_de_librairie_Jeux_Videos;
 
 public class Game : INotifyPropertyChanged 
@@ -79,15 +79,41 @@ public partial class MainWindow : Window
     }
     private  void Rechercher(object? sender, RoutedEventArgs e)
     {
-        
+        var q = SearchBox.Text?.Trim();
+        SearchResults.Clear();
+        if (string.IsNullOrEmpty(q)) return;
+
+        var trouves = Games.Where(g =>
+            g.Name != null && g.Name.Contains(q, StringComparison.OrdinalIgnoreCase));
+        foreach (var g in trouves) SearchResults.Add(g);
         
     }
     private void Ajouter(object? sender, RoutedEventArgs e)
     {
-        
-    }
-       
+        var name = GameName.Text?.Trim();
+        var date = GameDate.Text?.Trim();
+        var Synopsis = GameSynopsis.Text?.Trim();
+        var Rating = GameRating.Text?.Trim();
+        var Genre = GameGenre.Text?.Trim();
+        if (string.IsNullOrEmpty(name)) return;
+        if (Games.Any(g => string.Equals(g.Name, name, StringComparison.OrdinalIgnoreCase))) return;
 
+    Games.Add(new Game
+    {
+        Name = name,
+        Date = date,
+        Synopsis = Synopsis,
+        Rating = Rating,
+        Genre = Genre
+    });
+    SauvegarderJeux();
+
+    GameName.Text = "";
+    GameDate.Text = "";
+    GameSynopsis.Text = "";
+    GameRating.Text = "";
+    GameGenre.Text = "";
+    }
     private void SauvegarderJeux()
     {
         var json = JsonSerializer.Serialize(Games, new JsonSerializerOptions { WriteIndented = true });
