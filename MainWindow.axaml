@@ -13,7 +13,7 @@
 
             <ListBox x:Name="GameList"
                      ItemsSource="{Binding Games}"
-                     Width="300"
+                     Width="400"
                      MinHeight="300"
                      Background="#00000000"
                      ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -24,7 +24,8 @@
                                     Content="{Binding Name}"
                                     Click="AfficherInfo" />
                             <TextBlock Grid.Column="1"
-                                       Text = " Disponible :"/>
+                                       Text = " Disponible :"
+                                       VerticalAlignment="Center" />
                             <CheckBox Grid.Column="2"
                                       IsChecked="{Binding Disponible, Mode=TwoWay}"/>
                             <Button Grid.Column="3"
@@ -58,6 +59,7 @@
                                      Text="{Binding Rating}"/>
                             <TextBox Grid.Row="5"
                                      Text="{Binding Disponible}"/>
+                            <Image Source ="{Binding Url}" RenderOptions.BitmapInterpolationMode="None" Width="128" Grid.Row="6" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -72,13 +74,25 @@
                             Click="Rechercher" />
 
                 </StackPanel>
-                <StackPanel x:Name="Ajouterinfos" Spacing="5" VerticalAlignment="Top" IsVisible="False">
+                <StackPanel x:Name="ModifierInfos" Spacing="5" VerticalAlignment="Top" IsVisible="False">
                     <TextBox x:Name="GameName" PlaceholderText="Name?" />
                     <TextBox x:Name="GameDate" PlaceholderText="Date de sortie?" />
                     <TextBox x:Name="GameGenre" PlaceholderText="Genre?" />
                     <TextBox x:Name="GameSynopsis" PlaceholderText="Synopsis?" />
                     <TextBox x:Name="GameRating" PlaceholderText="Rating?" />
-                    <Button Content="Ajouter"
+                    <TextBox x:Name="GameUrl" PlaceholderText="Url Image?" />
+
+                    <Button Content="Modifier"
+                            Click="Modifier" />
+                </StackPanel>
+                <StackPanel x:Name="Ajouterinfos" Spacing="5" VerticalAlignment="Top" IsVisible="True">
+                    <TextBox x:Name="NomJeu" PlaceholderText="Name?" />
+                    <TextBox x:Name="DateJeu" PlaceholderText="Date de sortie?" />
+                    <TextBox x:Name="GenreJeu" PlaceholderText="Genre?" />
+                    <TextBox x:Name="SynopsisJeu" PlaceholderText="Synopsis?" />
+                    <TextBox x:Name="JeuScore" PlaceholderText="Rating?" />
+                    <TextBox x:Name="UrlJeu" PlaceholderText="Url Image?" />
+                    <Button Content="ajouter"
                             Click="Ajouter" />
                 </StackPanel>
             </StackPanel>
