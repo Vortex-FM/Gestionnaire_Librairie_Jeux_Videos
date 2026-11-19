@@ -79,10 +79,7 @@ public partial class MainWindow : Window
     }
     private  void Rechercher(object? sender, RoutedEventArgs e)
     {
-        var q = SearchBox.Text?.Trim();
-        if (string.IsNullOrEmpty(q)) return;        
-        SearchResults.Clear();
-        foreach (var g in q) SearchResults.Add(g);
+        
         
     }
     private void Ajouter(object? sender, RoutedEventArgs e)

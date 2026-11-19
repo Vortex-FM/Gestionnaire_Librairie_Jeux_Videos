@@ -34,7 +34,7 @@
 
 
 
-            <ListBox x:Name="GameInfos"
+            <ListBox x:Name="GameInfo"
                      ItemsSource="{Binding GameInfos}"
                      Width="300"
                      MinHeight="300"
