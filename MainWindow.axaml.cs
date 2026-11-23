@@ -101,7 +101,6 @@ public partial class MainWindow : Window
         GameInfos.Add($"Synopsis : {game.Synopsis}");
         GameInfos.Add($"Rating : {game.Rating}");
         GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
-        ModifierInfos.IsVisible = true;
         
     }
     private void ClikCheck(object? sender, RoutedEventArgs e)
@@ -186,8 +185,10 @@ public partial class MainWindow : Window
         GenreJeu.Text = "";
         UrlJeu.Text = "";
     }
+    private void ModiferAfficher(object? sender, RoutedEventArgs e) => ModifierInfos.IsVisible = true;
     private async void Modifier(object? sender, RoutedEventArgs e)
     {
+
         if (_jeuselectionne == null) return;
         var name = GameName.Text?.Trim();
         _jeuselectionne.Name = name;
