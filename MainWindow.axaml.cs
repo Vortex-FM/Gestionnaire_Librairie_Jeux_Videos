@@ -208,13 +208,15 @@ public partial class MainWindow : Window
         SauvegarderJeux();
 
         NomJeu.Text = DateJeu.Text = SynopsisJeu.Text = JeuScore.Text = GenreJeu.Text = UrlJeu.Text = "";
-        jeu.Cover = await ChargerBitmapAsync(jeu.Url); 
+        jeu.Cover = await ChargerBitmapAsync(jeu.Url);
+        Ajouterinfos.IsVisible = false;
     }
     private void ModiferAfficher(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
         ModifierInfos.IsVisible = true;
     }
+    private void AfficherAjouterInfos(object? sender, RoutedEventArgs e) => Ajouterinfos.IsVisible = true;
         private async void Modifier(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
