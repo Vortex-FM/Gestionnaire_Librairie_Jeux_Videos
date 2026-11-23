@@ -46,7 +46,7 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="local:Game">
-                            <Grid RowDefinitions="Auto, *, Auto">
+                            <Grid RowDefinitions="100, 100,100,*,100,100">
                                 <TextBlock Grid.Row="1"
                                            Text="{Binding Name}"/>
                                 <TextBlock Grid.Row="2"
@@ -70,11 +70,28 @@
                     <TextBox x:Name="SearchBox"
                              Width="200"
                              PlaceholderText="Rechercher un jeu..." />
-
-                    <Button Content="Rechercher"
+                    <Button x:Name="BouttonRechercher"
+                            Content="Rechercher"
                             Click="Rechercher" />
-
                 </StackPanel>
+                <Popup x:Name="PopUpResultats"
+                       PlacementTarget="{Binding #BouttonRechercher}"
+                       Placement="Bottom" IsLightDismissEnabled="True">
+                    <Border Background="Gray" BorderBrush="Red" BorderThickness="2">
+                        <StackPanel>
+                            <TextBlock x:Name="AucunResultat" Text="Aucun Résultat" IsVisible="False"/>
+                            <ListBox ItemsSource="{Binding SearchResults}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate x:DataType="local:Game">
+                                        <Button Content="{Binding Name}"
+                                                Click="ChoisirResultat"
+                                                HorizontalAlignment="Stretch"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Border>
+                </Popup>
                 <StackPanel x:Name="ModifierInfos" Spacing="5" VerticalAlignment="Top" IsVisible="False">
                     <TextBox x:Name="GameName" PlaceholderText="Name?" />
                     <TextBox x:Name="GameDate" PlaceholderText="Date de sortie?" />

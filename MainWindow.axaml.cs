@@ -94,6 +94,7 @@ public partial class MainWindow : Window
         GameUrl.Text = game.Url;
 
         GameInfos.Clear();
+        await ChargerImageAsync(game.Url);  
         GameInfos.Add($"Nom : {game.Name}");
         GameInfos.Add($"Date : {game.Date}");
         GameInfos.Add($"Genre : {game.Genre}");
@@ -101,7 +102,7 @@ public partial class MainWindow : Window
         GameInfos.Add($"Rating : {game.Rating}");
         GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
         ModifierInfos.IsVisible = true;
-        await ChargerImageAsync(game.Url);
+        
     }
     private void ClikCheck(object? sender, RoutedEventArgs e)
     {
@@ -138,7 +139,7 @@ public partial class MainWindow : Window
             Console.WriteLine($"JSON invalide : {ex.Message}");
         }
     }
-    private  void Rechercher(object? sender, RoutedEventArgs e)
+    private void Rechercher(object? sender, RoutedEventArgs e)
     {
         var q = SearchBox.Text?.Trim();
         SearchResults.Clear();
@@ -147,7 +148,14 @@ public partial class MainWindow : Window
         var trouves = Games.Where(g =>
             g.Name != null && g.Name.Contains(q, StringComparison.OrdinalIgnoreCase));
         foreach (var g in trouves) SearchResults.Add(g);
-        
+
+        AucunResultat.IsVisible = SearchResults.Count == 0;
+        PopUpResultats.IsOpen = true;
+    }
+    private void ChoisirResultat(object? sender, RoutedEventArgs e)
+    {
+        PopUpResultats.IsOpen = false;
+        AfficherInfo(sender, e); 
     }
     private void Ajouter(object? sender, RoutedEventArgs e)
     {
