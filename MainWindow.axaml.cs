@@ -11,7 +11,6 @@ using System.Text.Json;
 using System.Linq;
 using Avalonia.Metadata;
 namespace Gestionnaire_de_librairie_Jeux_Videos;
-
 using System.Collections;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -233,7 +232,7 @@ public partial class MainWindow : Window
         jeu.Url = GameUrl.Text?.Trim();
         SauvegarderJeux();
 
-        AfficherJeu(jeu);                       // rafraîchit la fiche (et referme le formulaire)
+        AfficherJeu(jeu);                      
         if (ancienneUrl != jeu.Url)
             jeu.Cover = await ChargerBitmapAsync(jeu.Url);
     }
