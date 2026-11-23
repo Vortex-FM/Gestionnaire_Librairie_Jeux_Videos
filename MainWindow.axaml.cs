@@ -132,20 +132,29 @@ public partial class MainWindow : Window
         
     }
     private void Supprimer(object? sender, RoutedEventArgs e)
-{
-    if (sender is not Button { DataContext: Game game }) return;
-    Games.Remove(game);
-    SearchResults.Remove(game);
-    SauvegarderJeux();
-
-    if (_jeuselectionne == game)
     {
-        _jeuselectionne = null;
-        PanneauInfos.DataContext = null;
-        PanneauInfos.IsVisible = false;
-        ModifierInfos.IsVisible = false;
+        if (sender is not Button { DataContext: Game game }) return;
+        Games.Remove(game);
+        SearchResults.Remove(game);
+        SauvegarderJeux();
+
+        if (_jeuselectionne == game)
+        {
+            _jeuselectionne = null;
+            PanneauInfos.DataContext = null;
+            PanneauInfos.IsVisible = false;
+            ModifierInfos.IsVisible = false;
+        }
     }
-}
+    private void Trier(object? sender , RoutedEventArgs e)
+    {
+        var JeuTriees = Games.OrderBy(g => g.Name, StringComparer.OrdinalIgnoreCase).ToList();
+        Games.Clear();
+        foreach(var jeu in JeuTriees)
+        {
+            Games.Add(jeu);
+        }
+    }
     private void ChargerJeux()
     {
 
@@ -221,7 +230,7 @@ public partial class MainWindow : Window
         ModifierInfos.IsVisible = true;
     }
     private void AfficherAjouterInfos(object? sender, RoutedEventArgs e) => Ajouterinfos.IsVisible = true;
-        private async void Modifier(object? sender, RoutedEventArgs e)
+    private async void Modifier(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
         var name = GameName.Text?.Trim();
@@ -238,8 +247,28 @@ public partial class MainWindow : Window
         jeu.Url = GameUrl.Text?.Trim();
         SauvegarderJeux();
 
-        AfficherJeu(jeu);                      
+        AfficherJeu(jeu);
         if (ancienneUrl != jeu.Url)
             jeu.Cover = await ChargerBitmapAsync(jeu.Url);
     }
+    
+    //     private static string TrouverDossierProjet()
+    // {
+    //     var dossier = new DirectoryInfo(AppContext.BaseDirectory);
+
+    //     while (dossier != null)
+    //     {
+    //         if (dossier.GetFiles("*.csproj").Length > 0)
+    //             return dossier.FullName;
+
+    //         dossier = dossier.Parent;
+    //     }
+
+    //     return AppContext.BaseDirectory;
+    // }
+
+    // private static string LibPath = Path.Combine(
+    //     TrouverDossierProjet(), "Librairie.json");
+
+    // permet de créer un librairie.json au même endroit que le .csproj
 }

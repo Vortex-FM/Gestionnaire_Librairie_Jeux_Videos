@@ -50,43 +50,50 @@ les collections Games et SearchResults sont donc utilisables dans les bindings. 
                                 <!-- Bouton qui affiche le formulaire d'ajout (méthode AfficherAjouterInfos) -->
                                 <Button Content="Ajouter"
                                         Click="AfficherAjouterInfos" />
+                                <Button Content="Trier"
+                                        Click="Trier"/>
                         </StackPanel>
+
 
                         <!-- Deux colonnes : la bibliothèque (600 px) et le panneau latéral (reste de la largeur) -->
                         <Grid ColumnDefinitions="600,*" ColumnSpacing="24">
 
                                 <!-- ===== Zone 2 : bibliothèque en grille de jaquettes ===== -->
-                                <ItemsControl Grid.Column="0" ItemsSource="{Binding Games}">
-                                        <!-- WrapPanel : les jaquettes passent à la ligne quand la place manque -->
-                                        <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                        <WrapPanel/>
-                                                </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <!-- Modèle d'affichage d'un jeu : une tuile cliquable -->
-                                        <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="local:Game">
-                                                        <!-- Le bouton sert de tuile ; un clic affiche la fiche (AfficherInfo) -->
-                                                        <Button Click="AfficherInfo" Padding="0" Margin="0,0,14,14"
-                                                                Background="#DC9532B9" BorderThickness="0" CornerRadius="8">
-                                                                <!-- Cadre fixe 170x250 aux coins arrondis, qui rogne l'image -->
-                                                                <Border Width="170" Height="250" CornerRadius="8"
-                                                                        ClipToBounds="True">
-                                                                        <Grid>
-                                                                                <!-- Jaquette : remplit tout le cadre (rognée si besoin) -->
-                                                                                <Image Source="{Binding Cover}" Stretch="UniformToFill"/>
-                                                                                <!-- Bandeau semi-transparent avec le titre, collé en bas -->
-                                                                                <Border VerticalAlignment="Bottom" Background="#AA000000" Padding="8">
-                                                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
-                                                                                                   TextWrapping="Wrap"/>
-                                                                                </Border>
-                                                                        </Grid>
-                                                                </Border>
-                                                        </Button>
-                                                </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-
+                                <ScrollViewer Grid.Column="0"
+                                              VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled"
+                                              MaxHeight="600">
+                                        <ItemsControl ItemsSource="{Binding Games}">
+                                                <!-- WrapPanel : les jaquettes passent à la ligne quand la place manque -->
+                                                <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                                <WrapPanel/>
+                                                        </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <!-- Modèle d'affichage d'un jeu : une tuile cliquable -->
+                                                <ItemsControl.ItemTemplate>
+                                                        <DataTemplate x:DataType="local:Game">
+                                                                <!-- Le bouton sert de tuile ; un clic affiche la fiche (AfficherInfo) -->
+                                                                <Button Click="AfficherInfo" Padding="0" Margin="0,0,14,14"
+                                                                        Background="#DC9532B9" BorderThickness="0" CornerRadius="8">
+                                                                        <!-- Cadre fixe 170x250 aux coins arrondis, qui rogne l'image -->
+                                                                        <Border Width="170" Height="250" CornerRadius="8"
+                                                                                ClipToBounds="True">
+                                                                                <Grid>
+                                                                                        <!-- Jaquette : remplit tout le cadre (rognée si besoin) -->
+                                                                                        <Image Source="{Binding Cover}" Stretch="UniformToFill"/>
+                                                                                        <!-- Bandeau semi-transparent avec le titre, collé en bas -->
+                                                                                        <Border VerticalAlignment="Bottom" Background="#AA000000" Padding="8">
+                                                                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
+                                                                                                           TextWrapping="Wrap"/>
+                                                                                        </Border>
+                                                                                </Grid>
+                                                                        </Border>
+                                                                </Button>
+                                                        </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                </ScrollViewer>
                                 <!-- ===== Zone 3 : panneau latéral (fiche, modification, ajout) ===== -->
                                 <StackPanel Grid.Column="1" Spacing="16">
 
