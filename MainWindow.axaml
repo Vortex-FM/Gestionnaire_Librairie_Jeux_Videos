@@ -42,7 +42,7 @@
                          ItemsSource="{Binding GameInfos}"
                          MinHeight="300"
                          MinWidth="300"
-                         Background="#E014E0"
+                         Background="#511991"
                          ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
