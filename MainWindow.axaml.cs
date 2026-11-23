@@ -56,14 +56,11 @@ public partial class MainWindow : Window
     public ObservableCollection<Game> SearchResults { get; } = new();
     private static string LibPath = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
     private Game? _jeuselectionne;
-
-
     public MainWindow()
     {
         InitializeComponent();
         DataContext = this;
         ChargerJeux();
-
     }
     private static readonly HttpClient _http = new();
     private async Task ChargerImageAsync(string? Url)
@@ -71,16 +68,16 @@ public partial class MainWindow : Window
         GameImage.Source = null;
         if (string.IsNullOrWhiteSpace(Url)) return;
         try
-    {
-        var bytes = await _http.GetByteArrayAsync(Url);
-        using var ms = new MemoryStream(bytes);
-        GameImage.Source = new Bitmap(ms);
-    }
-    catch (Exception ex) when (ex is HttpRequestException or ArgumentException
-                                   or NotSupportedException or InvalidOperationException)
-    {
-        Console.WriteLine($"Image impossible à charger : {ex.Message}");
-    }
+        {
+            var bytes = await _http.GetByteArrayAsync(Url);
+            using var ms = new MemoryStream(bytes);
+            GameImage.Source = new Bitmap(ms);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or ArgumentException
+                                       or NotSupportedException or InvalidOperationException)
+        {
+            Console.WriteLine($"Image impossible à charger : {ex.Message}");
+        }
     }
     private async void AfficherInfo(object? sender, RoutedEventArgs e)
     {
@@ -94,14 +91,13 @@ public partial class MainWindow : Window
         GameUrl.Text = game.Url;
 
         GameInfos.Clear();
-        await ChargerImageAsync(game.Url);  
+        await ChargerImageAsync(game.Url);
         GameInfos.Add($"Nom : {game.Name}");
         GameInfos.Add($"Date : {game.Date}");
         GameInfos.Add($"Genre : {game.Genre}");
         GameInfos.Add($"Synopsis : {game.Synopsis}");
         GameInfos.Add($"Rating : {game.Rating}");
         GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
-        
     }
     private void ClikCheck(object? sender, RoutedEventArgs e)
     {
@@ -113,7 +109,7 @@ public partial class MainWindow : Window
     }
     private void Supprimer(object? sender, RoutedEventArgs e)
     {
-        if (sender is not Button {DataContext : Game game}) return;
+        if (sender is not Button { DataContext: Game game }) return;
         Games.Remove(game);
         SearchResults.Remove(game);
         SauvegarderJeux();
@@ -154,7 +150,7 @@ public partial class MainWindow : Window
     private void ChoisirResultat(object? sender, RoutedEventArgs e)
     {
         PopUpResultats.IsOpen = false;
-        AfficherInfo(sender, e); 
+        AfficherInfo(sender, e);
     }
     private void Ajouter(object? sender, RoutedEventArgs e)
     {
@@ -166,7 +162,6 @@ public partial class MainWindow : Window
         var Url = UrlJeu.Text?.Trim();
         if (string.IsNullOrEmpty(name)) return;
         if (Games.Any(g => string.Equals(g.Name, name, StringComparison.OrdinalIgnoreCase))) return;
-
         Games.Add(new Game
         {
             Name = name,
@@ -188,7 +183,6 @@ public partial class MainWindow : Window
     private void ModiferAfficher(object? sender, RoutedEventArgs e) => ModifierInfos.IsVisible = true;
     private async void Modifier(object? sender, RoutedEventArgs e)
     {
-
         if (_jeuselectionne == null) return;
         var name = GameName.Text?.Trim();
         _jeuselectionne.Name = name;
@@ -206,13 +200,10 @@ public partial class MainWindow : Window
         GameGenre.Text = "";
         GameUrl.Text = "";
         ModifierInfos.IsVisible = false;
-        
     }
     private void SauvegarderJeux()
     {
         var json = JsonSerializer.Serialize(Games, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(LibPath, json);
     }
-    
-    
 }
