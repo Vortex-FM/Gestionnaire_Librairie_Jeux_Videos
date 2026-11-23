@@ -80,17 +80,6 @@
                         </StackPanel>
                     </Border>
                 </Popup>
-                <StackPanel x:Name="ModifierInfos" Spacing="5" VerticalAlignment="Top" IsVisible="False" MaxWidth="250">
-                    <TextBox x:Name="GameName" PlaceholderText="Name?" TextWrapping="Wrap" />
-                    <TextBox x:Name="GameDate" PlaceholderText="Date de sortie?" TextWrapping="Wrap"/>
-                    <TextBox x:Name="GameGenre" PlaceholderText="Genre?" TextWrapping="Wrap"/>
-                    <TextBox x:Name="GameSynopsis" PlaceholderText="Synopsis?" TextWrapping="Wrap"/>
-                    <TextBox x:Name="GameRating" PlaceholderText="Rating?" TextWrapping="Wrap"/>
-                    <TextBox x:Name="GameUrl" PlaceholderText="Url Image?" TextWrapping="Wrap"/>
-                    <Button Content="Modifier"
-                            Click="Modifier" />
-                </StackPanel>
-
                 <StackPanel x:Name="Ajouterinfos" Spacing="5" VerticalAlignment="Top" IsVisible="True" MaxWidth="250">
                     <TextBox x:Name="NomJeu" PlaceholderText="Name?" TextWrapping="Wrap"/>
                     <TextBox x:Name="DateJeu" PlaceholderText="Date de sortie?" TextWrapping="Wrap"/>
@@ -100,6 +89,17 @@
                     <TextBox x:Name="UrlJeu" PlaceholderText="Url Image?" TextWrapping="Wrap"/>
                     <Button Content="ajouter"
                             Click="Ajouter" />
+                </StackPanel>
+
+                <StackPanel x:Name="ModifierInfos" Spacing="5" VerticalAlignment="Top" IsVisible="False" MaxWidth="250">
+                    <TextBox x:Name="GameName" PlaceholderText="Name?" TextWrapping="Wrap" />
+                    <TextBox x:Name="GameDate" PlaceholderText="Date de sortie?" TextWrapping="Wrap"/>
+                    <TextBox x:Name="GameGenre" PlaceholderText="Genre?" TextWrapping="Wrap"/>
+                    <TextBox x:Name="GameSynopsis" PlaceholderText="Synopsis?" TextWrapping="Wrap"/>
+                    <TextBox x:Name="GameRating" PlaceholderText="Rating?" TextWrapping="Wrap"/>
+                    <TextBox x:Name="GameUrl" PlaceholderText="Url Image?" TextWrapping="Wrap"/>
+                    <Button Content="Modifier"
+                            Click="Modifier" />
                 </StackPanel>
             </StackPanel>
 
