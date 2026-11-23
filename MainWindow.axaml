@@ -40,27 +40,13 @@
                 <Image x:Name="GameImage" Width="128"/>
                 <ListBox x:Name="GameInfo"
                          ItemsSource="{Binding GameInfos}"
-                         Width="300"
                          MinHeight="300"
+                         MinWidth="300"
                          Background="#E014E0"
                          ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
-                        <DataTemplate x:DataType="local:Game">
-                            <Grid RowDefinitions="100, 100,100,*,100,100">
-                                <TextBlock Grid.Row="1"
-                                           Text="{Binding Name}"/>
-                                <TextBlock Grid.Row="2"
-                                           Text = "{Binding Date}"/>
-                                <TextBox Grid.Row="3"
-                                         Text="{Binding Genre}"/>
-                                <TextBox Grid.Row="4"
-                                         Text="{Binding Synopsis}" TextWrapping="Wrap"/>
-                                <TextBox Grid.Row="5"
-                                         Text="{Binding Rating}"/>
-                                <TextBox Grid.Row="6"
-                                         Text="{Binding Disponible}"/>
-
-                            </Grid>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" MaxWidth="280"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
