@@ -11,7 +11,11 @@ using System.Text.Json;
 using System.Linq;
 using Avalonia.Metadata;
 namespace Gestionnaire_de_librairie_Jeux_Videos;
+
+using System.Collections;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 
 
 public class Game : INotifyPropertyChanged 
@@ -51,9 +55,9 @@ public partial class MainWindow : Window
     public ObservableCollection<string> GameInfos { get; } = new();
     public ObservableCollection<Game> SearchResults { get; } = new();
     private static string LibPath = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
-    private Game? _jeuselectionne;  
-    
-    
+    private Game? _jeuselectionne;
+
+
     public MainWindow()
     {
         InitializeComponent();
@@ -61,7 +65,24 @@ public partial class MainWindow : Window
         ChargerJeux();
 
     }
-    private void AfficherInfo(object? sender, RoutedEventArgs e)
+    private static readonly HttpClient _http = new();
+    private async Task ChargerImageAsync(string? Url)
+    {
+        GameImage.Source = null;
+        if (string.IsNullOrWhiteSpace(Url)) return;
+        try
+    {
+        var bytes = await _http.GetByteArrayAsync(Url);
+        using var ms = new MemoryStream(bytes);
+        GameImage.Source = new Bitmap(ms);
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ArgumentException
+                                   or NotSupportedException or InvalidOperationException)
+    {
+        Console.WriteLine($"Image impossible à charger : {ex.Message}");
+    }
+    }
+    private async void AfficherInfo(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button { DataContext: Game game }) return;
         _jeuselectionne = game;
@@ -70,6 +91,7 @@ public partial class MainWindow : Window
         GameGenre.Text = game.Genre;
         GameRating.Text = game.Rating;
         GameSynopsis.Text = game.Synopsis;
+        GameUrl.Text = game.Url;
 
         GameInfos.Clear();
         GameInfos.Add($"Nom : {game.Name}");
@@ -79,6 +101,7 @@ public partial class MainWindow : Window
         GameInfos.Add($"Rating : {game.Rating}");
         GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
         ModifierInfos.IsVisible = true;
+        await ChargerImageAsync(game.Url);
     }
     private void ClikCheck(object? sender, RoutedEventArgs e)
     {
@@ -143,7 +166,8 @@ public partial class MainWindow : Window
             Date = date,
             Synopsis = Synopsis,
             Rating = Rating,
-            Genre = Genre
+            Genre = Genre,
+            Url = Url
         });
         SauvegarderJeux();
 
@@ -154,7 +178,7 @@ public partial class MainWindow : Window
         GenreJeu.Text = "";
         UrlJeu.Text = "";
     }
-    private void Modifier(object? sender, RoutedEventArgs e)
+    private async void Modifier(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
         var name = GameName.Text?.Trim();
@@ -173,6 +197,7 @@ public partial class MainWindow : Window
         GameGenre.Text = "";
         GameUrl.Text = "";
         ModifierInfos.IsVisible = false;
+        
     }
     private void SauvegarderJeux()
     {
