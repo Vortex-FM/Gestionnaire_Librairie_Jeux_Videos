@@ -192,7 +192,11 @@ public partial class MainWindow : Window
     private async void Ajouter(object? sender, RoutedEventArgs e)
     {
         var name = NomJeu.Text?.Trim();
-        if (string.IsNullOrEmpty(name)) return;
+        if (string.IsNullOrEmpty(name))
+        {
+            Ajouterinfos.IsVisible = false;
+            return;
+        }
         if (Games.Any(g => string.Equals(g.Name, name, StringComparison.OrdinalIgnoreCase))) return;
 
         var jeu = new Game
