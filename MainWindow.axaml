@@ -47,6 +47,9 @@ les collections Games et SearchResults sont donc utilisables dans les bindings. 
                                                 </StackPanel>
                                         </Border>
                                 </Popup>
+                                <!-- Bouton qui affiche le formulaire d'ajout (méthode AfficherAjouterInfos) -->
+                                <Button Content="Ajouter"
+                                        Click="AfficherAjouterInfos" />
                         </StackPanel>
 
                         <!-- Deux colonnes : la bibliothèque (600 px) et le panneau latéral (reste de la largeur) -->
@@ -65,7 +68,7 @@ les collections Games et SearchResults sont donc utilisables dans les bindings. 
                                                 <DataTemplate x:DataType="local:Game">
                                                         <!-- Le bouton sert de tuile ; un clic affiche la fiche (AfficherInfo) -->
                                                         <Button Click="AfficherInfo" Padding="0" Margin="0,0,14,14"
-                                                                Background="#DC9532B9" BorderThickness="0">
+                                                                Background="#DC9532B9" BorderThickness="0" CornerRadius="8">
                                                                 <!-- Cadre fixe 170x250 aux coins arrondis, qui rogne l'image -->
                                                                 <Border Width="170" Height="250" CornerRadius="8"
                                                                         ClipToBounds="True">
@@ -122,11 +125,6 @@ les collections Games et SearchResults sont donc utilisables dans les bindings. 
                                                 <!-- Applique les changements, sauvegarde et recharge la jaquette si l'adresse a changé -->
                                                 <Button Content="Enregistrer les modifications" Click="Modifier"/>
                                         </StackPanel>
-
-                                        <!-- Bouton qui affiche le formulaire d'ajout (méthode AfficherAjouterInfos) -->
-                                        <Button Content="Ajouter"
-                                                Click="AfficherAjouterInfos" />
-
                                         <!-- Formulaire d'ajout : masqué au départ, visible après un clic sur "Ajouter".
                                         Le nom est obligatoire ; les autres champs sont facultatifs. -->
                                         <StackPanel x:Name="Ajouterinfos" Spacing="5" IsVisible="False">
