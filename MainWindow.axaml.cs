@@ -48,61 +48,81 @@ public class Game : INotifyPropertyChanged
         }
     }
     public event PropertyChangedEventHandler? PropertyChanged;
+    private Bitmap? _cover;
+
+    [JsonIgnore]   
+    public Bitmap? Cover
+    {
+        get => _cover;
+        set
+        {
+            if (_cover == value) return;
+            _cover = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Cover)));
+        }
+    }
 }
 public partial class MainWindow : Window
 {
     public ObservableCollection<Game> Games { get; } = new();
-    public ObservableCollection<string> GameInfos { get; } = new();
     public ObservableCollection<Game> SearchResults { get; } = new();
     private static string LibPath = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
     private Game? _jeuselectionne;
+    private static readonly HttpClient _http = CreerClient();
     public MainWindow()
     {
         InitializeComponent();
         DataContext = this;
         ChargerJeux();
+        _ = ChargerCouverturesAsync();
     }
-    private static readonly HttpClient _http = new();
-    private async Task ChargerImageAsync(string? Url)
+    private static HttpClient CreerClient()
     {
-        GameImage.Source = null;
-        if (string.IsNullOrWhiteSpace(Url)) return;
+        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) GestionnaireJeux/1.0");
+        return client;
+    }
+     private async Task ChargerCouverturesAsync()
+    {
+        await Task.WhenAll(Games.ToList().Select(async g => g.Cover = await ChargerBitmapAsync(g.Url)));
+    }
+
+    private async Task<Bitmap?> ChargerBitmapAsync(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return null;
         try
         {
-            var bytes = await _http.GetByteArrayAsync(Url);
+            var bytes = await _http.GetByteArrayAsync(url);
             using var ms = new MemoryStream(bytes);
-            GameImage.Source = new Bitmap(ms);
+            return new Bitmap(ms);
         }
-        catch (Exception ex) when (ex is HttpRequestException or ArgumentException
-                                       or NotSupportedException or InvalidOperationException)
+        catch (Exception ex)
         {
-            Console.WriteLine($"Image impossible à charger : {ex.Message}");
+            Console.WriteLine($"Image impossible à charger ({url}) : {ex.Message}");
+            return null;
         }
     }
     private async void AfficherInfo(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button { DataContext: Game game }) return;
-        await AfficherInfoAsync(game);
+        AfficherJeu(game);
     }
-    private async Task AfficherInfoAsync(Game game)
+    private void AfficherJeu(Game game)
     {
-        
+
         _jeuselectionne = game;
+        PanneauInfos.DataContext = null;   
+        PanneauInfos.DataContext = game;
+        PanneauInfos.IsVisible = true;
+        ModifierInfos.IsVisible = false;
+
         GameName.Text = game.Name;
         GameDate.Text = game.Date;
         GameGenre.Text = game.Genre;
         GameRating.Text = game.Rating;
         GameSynopsis.Text = game.Synopsis;
         GameUrl.Text = game.Url;
-
-        GameInfos.Clear();
-        await ChargerImageAsync(game.Url);
-        GameInfos.Add($"Nom : {game.Name}");
-        GameInfos.Add($"Date : {game.Date}");
-        GameInfos.Add($"Genre : {game.Genre}");
-        GameInfos.Add($"Synopsis : {game.Synopsis}");
-        GameInfos.Add($"Rating : {game.Rating}");
-        GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
     }
     private async void ClikCheck(object? sender, RoutedEventArgs e)
     {
@@ -110,19 +130,26 @@ public partial class MainWindow : Window
 
         game.Disponible = cb.IsChecked == true;
         SauvegarderJeux();
-        await AfficherInfoAsync(game);
         
     }
     private void Supprimer(object? sender, RoutedEventArgs e)
+{
+    if (sender is not Button { DataContext: Game game }) return;
+    Games.Remove(game);
+    SearchResults.Remove(game);
+    SauvegarderJeux();
+
+    if (_jeuselectionne == game)
     {
-        if (sender is not Button { DataContext: Game game }) return;
-        Games.Remove(game);
-        SearchResults.Remove(game);
-        SauvegarderJeux();
+        _jeuselectionne = null;
+        PanneauInfos.DataContext = null;
+        PanneauInfos.IsVisible = false;
+        ModifierInfos.IsVisible = false;
     }
+}
     private void ChargerJeux()
     {
-        
+
         if (!File.Exists(LibPath)) return;
         try
         {
@@ -139,6 +166,11 @@ public partial class MainWindow : Window
         {
             Console.WriteLine($"JSON invalide : {ex.Message}");
         }
+    }
+     private void SauvegarderJeux()
+    {
+        var json = JsonSerializer.Serialize(Games, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(LibPath, json);
     }
     private void Rechercher(object? sender, RoutedEventArgs e)
     {
@@ -158,55 +190,51 @@ public partial class MainWindow : Window
         PopUpResultats.IsOpen = false;
         AfficherInfo(sender, e);
     }
-    private void Ajouter(object? sender, RoutedEventArgs e)
+    private async void Ajouter(object? sender, RoutedEventArgs e)
     {
         var name = NomJeu.Text?.Trim();
-        var date = DateJeu.Text?.Trim();
-        var Synopsis = SynopsisJeu.Text?.Trim();
-        var Rating = JeuScore.Text?.Trim();
-        var Genre = GenreJeu.Text?.Trim();
-        var Url = UrlJeu.Text?.Trim();
         if (string.IsNullOrEmpty(name)) return;
         if (Games.Any(g => string.Equals(g.Name, name, StringComparison.OrdinalIgnoreCase))) return;
-        Games.Add(new Game
+
+        var jeu = new Game
         {
             Name = name,
-            Date = date,
-            Synopsis = Synopsis,
-            Rating = Rating,
-            Genre = Genre,
-            Url = Url
-        });
+            Date = DateJeu.Text?.Trim(),
+            Synopsis = SynopsisJeu.Text?.Trim(),
+            Rating = JeuScore.Text?.Trim(),
+            Genre = GenreJeu.Text?.Trim(),
+            Url = UrlJeu.Text?.Trim()
+        };
+        Games.Add(jeu);
         SauvegarderJeux();
 
-        NomJeu.Text = "";
-        DateJeu.Text = "";
-        SynopsisJeu.Text = "";
-        JeuScore.Text = "";
-        GenreJeu.Text = "";
-        UrlJeu.Text = "";
+        NomJeu.Text = DateJeu.Text = SynopsisJeu.Text = JeuScore.Text = GenreJeu.Text = UrlJeu.Text = "";
+        jeu.Cover = await ChargerBitmapAsync(jeu.Url); 
     }
     private void ModiferAfficher(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
         ModifierInfos.IsVisible = true;
     }
-    private async void Modifier(object? sender, RoutedEventArgs e)
+        private async void Modifier(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
         var name = GameName.Text?.Trim();
-        _jeuselectionne.Name = name;
-        _jeuselectionne.Date = GameDate.Text?.Trim();
-        _jeuselectionne.Synopsis = GameSynopsis.Text?.Trim();
-        _jeuselectionne.Rating = GameRating.Text?.Trim();
-        _jeuselectionne.Genre = GameGenre.Text?.Trim();
-        _jeuselectionne.Url = GameUrl.Text?.Trim();
+        if (string.IsNullOrEmpty(name)) return;
+
+        var jeu = _jeuselectionne;
+        var ancienneUrl = jeu.Url;
+
+        jeu.Name = name;
+        jeu.Date = GameDate.Text?.Trim();
+        jeu.Synopsis = GameSynopsis.Text?.Trim();
+        jeu.Rating = GameRating.Text?.Trim();
+        jeu.Genre = GameGenre.Text?.Trim();
+        jeu.Url = GameUrl.Text?.Trim();
         SauvegarderJeux();
-        ModifierInfos.IsVisible = false;
-    }
-    private void SauvegarderJeux()
-    {
-        var json = JsonSerializer.Serialize(Games, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(LibPath, json);
+
+        AfficherJeu(jeu);                       // rafraîchit la fiche (et referme le formulaire)
+        if (ancienneUrl != jeu.Url)
+            jeu.Cover = await ChargerBitmapAsync(jeu.Url);
     }
 }
