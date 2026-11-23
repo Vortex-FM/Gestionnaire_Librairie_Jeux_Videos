@@ -180,7 +180,11 @@ public partial class MainWindow : Window
         GenreJeu.Text = "";
         UrlJeu.Text = "";
     }
-    private void ModiferAfficher(object? sender, RoutedEventArgs e) => ModifierInfos.IsVisible = true;
+    private void ModiferAfficher(object? sender, RoutedEventArgs e)
+    {
+        if (_jeuselectionne == null) return;
+        ModifierInfos.IsVisible = true;
+    }
     private async void Modifier(object? sender, RoutedEventArgs e)
     {
         if (_jeuselectionne == null) return;
@@ -192,13 +196,6 @@ public partial class MainWindow : Window
         _jeuselectionne.Genre = GameGenre.Text?.Trim();
         _jeuselectionne.Url = GameUrl.Text?.Trim();
         SauvegarderJeux();
-
-        GameName.Text = "";
-        GameDate.Text = "";
-        GameSynopsis.Text = "";
-        GameRating.Text = "";
-        GameGenre.Text = "";
-        GameUrl.Text = "";
         ModifierInfos.IsVisible = false;
     }
     private void SauvegarderJeux()

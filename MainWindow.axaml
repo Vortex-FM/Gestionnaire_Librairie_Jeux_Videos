@@ -50,7 +50,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Content="Modifier"
+                <Button Content="Afficher"
                         Click="ModiferAfficher" />
             </StackPanel>
             <StackPanel Spacing="10">
