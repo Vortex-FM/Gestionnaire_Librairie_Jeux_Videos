@@ -44,9 +44,9 @@
                                         <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="local:Game">
                                                         <Button Click="AfficherInfo" Padding="0" Margin="0,0,14,14"
-                                                                Background="Transparent" BorderThickness="0">
+                                                                Background="#DC9532B9" BorderThickness="0">
                                                                 <Border Width="170" Height="250" CornerRadius="8"
-                                                                        ClipToBounds="True" Background="#2B2B2B">
+                                                                        ClipToBounds="True">
                                                                         <Grid>
                                                                                 <Image Source="{Binding Cover}" Stretch="UniformToFill"/>
                                                                                 <Border VerticalAlignment="Bottom" Background="#AA000000" Padding="8">
