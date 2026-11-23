@@ -27,7 +27,8 @@
                                        Text = " Disponible :"
                                        VerticalAlignment="Center" />
                             <CheckBox Grid.Column="2"
-                                      IsChecked="{Binding Disponible, Mode=TwoWay}"/>
+                                      IsChecked="{Binding Disponible, Mode=TwoWay}"
+                                      Click="ClikCheck"/>
                             <Button Grid.Column="3"
                                     Content="supprimer"
                                     Click="Supprimer" />

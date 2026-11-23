@@ -82,6 +82,11 @@ public partial class MainWindow : Window
     private async void AfficherInfo(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button { DataContext: Game game }) return;
+        await AfficherInfoAsync(game);
+    }
+    private async Task AfficherInfoAsync(Game game)
+    {
+        
         _jeuselectionne = game;
         GameName.Text = game.Name;
         GameDate.Text = game.Date;
@@ -99,13 +104,14 @@ public partial class MainWindow : Window
         GameInfos.Add($"Rating : {game.Rating}");
         GameInfos.Add($"Disponible : {(game.Disponible ? "Oui" : "Non")}");
     }
-    private void ClikCheck(object? sender, RoutedEventArgs e)
+    private async void ClikCheck(object? sender, RoutedEventArgs e)
     {
         if (sender is not CheckBox { DataContext: Game game } cb) return;
 
         game.Disponible = cb.IsChecked == true;
         SauvegarderJeux();
-
+        await AfficherInfoAsync(game);
+        
     }
     private void Supprimer(object? sender, RoutedEventArgs e)
     {
