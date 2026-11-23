@@ -50,6 +50,8 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <Button Content="Modifier"
+                        Click="ModiferAfficher" />
             </StackPanel>
             <StackPanel Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Top">
@@ -85,10 +87,10 @@
                     <TextBox x:Name="GameSynopsis" PlaceholderText="Synopsis?" />
                     <TextBox x:Name="GameRating" PlaceholderText="Rating?" />
                     <TextBox x:Name="GameUrl" PlaceholderText="Url Image?" />
-
                     <Button Content="Modifier"
                             Click="Modifier" />
                 </StackPanel>
+
                 <StackPanel x:Name="Ajouterinfos" Spacing="5" VerticalAlignment="Top" IsVisible="True">
                     <TextBox x:Name="NomJeu" PlaceholderText="Name?" />
                     <TextBox x:Name="DateJeu" PlaceholderText="Date de sortie?" />
