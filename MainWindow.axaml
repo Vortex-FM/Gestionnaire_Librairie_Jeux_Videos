@@ -1,3 +1,6 @@
+<!-- Fenêtre principale du gestionnaire de librairie de jeux vidéo (Avalonia UI).
+La fenêtre est liée à elle-même (DataContext = this dans le code-behind) :
+les collections Games et SearchResults sont donc utilisables dans les bindings. -->
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:Gestionnaire_de_librairie_Jeux_Videos"
@@ -10,22 +13,32 @@
         Background="#141414"
         Title="Gestionnaire_de_librairie_Jeux_Videos">
 
+        <!-- Barre de défilement verticale si le contenu dépasse la fenêtre -->
         <ScrollViewer>
-                <!-- Barre de recherche + Boutton Rechercher -->
                 <StackPanel Margin="24" Spacing="20">
+
+                        <!-- ===== Zone 1 : barre de recherche ===== -->
                         <StackPanel Orientation="Horizontal" Spacing="10">
+                                <!-- Champ de saisie du nom du jeu recherché -->
                                 <TextBox x:Name="SearchBox" Width="300" PlaceholderText="Rechercher un jeu..."/>
+                                <!-- Lance la recherche (méthode Rechercher du code-behind) -->
                                 <Button x:Name="BouttonRechercher" Content="Rechercher" Click="Rechercher"/>
+
+                                <!-- Fenêtre flottante des résultats, placée sous le bouton.
+                                Elle se ferme d'un clic à l'extérieur (IsLightDismissEnabled). -->
                                 <Popup x:Name="PopUpResultats"
                                        PlacementTarget="{Binding #BouttonRechercher}"
                                        Placement="Bottom" IsLightDismissEnabled="True">
                                         <Border Background="#2B2B2B" BorderBrush="Gray" BorderThickness="1"
                                                 Padding="4" MinWidth="220" MaxHeight="250">
                                                 <StackPanel>
+                                                        <!-- Message affiché seulement quand la recherche ne donne rien -->
                                                         <TextBlock x:Name="AucunResultat" Text="Aucun résultat" IsVisible="False"/>
+                                                        <!-- Liste des jeux trouvés (collection SearchResults) -->
                                                         <ListBox ItemsSource="{Binding SearchResults}">
                                                                 <ListBox.ItemTemplate>
                                                                         <DataTemplate x:DataType="local:Game">
+                                                                                <!-- Un clic sur un résultat ferme la fenêtre et ouvre la fiche du jeu -->
                                                                                 <Button Content="{Binding Name}" Click="ChoisirResultat"
                                                                                         HorizontalAlignment="Stretch"/>
                                                                         </DataTemplate>
@@ -34,28 +47,32 @@
                                                 </StackPanel>
                                         </Border>
                                 </Popup>
-                                <Button Content="Ajouter"
-                                        Click="AfficherAjouterInfos" />
                         </StackPanel>
-                        <StackPanel Spacing="10">
 
-                        </StackPanel>
-                        <!-- Les Bouttons Images qui quand on click on affiche leurs infos-->
+                        <!-- Deux colonnes : la bibliothèque (600 px) et le panneau latéral (reste de la largeur) -->
                         <Grid ColumnDefinitions="600,*" ColumnSpacing="24">
+
+                                <!-- ===== Zone 2 : bibliothèque en grille de jaquettes ===== -->
                                 <ItemsControl Grid.Column="0" ItemsSource="{Binding Games}">
+                                        <!-- WrapPanel : les jaquettes passent à la ligne quand la place manque -->
                                         <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                         <WrapPanel/>
                                                 </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
+                                        <!-- Modèle d'affichage d'un jeu : une tuile cliquable -->
                                         <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="local:Game">
+                                                        <!-- Le bouton sert de tuile ; un clic affiche la fiche (AfficherInfo) -->
                                                         <Button Click="AfficherInfo" Padding="0" Margin="0,0,14,14"
-                                                                Background="#DC9532B9" BorderThickness="0" CornerRadius="8">
+                                                                Background="#DC9532B9" BorderThickness="0">
+                                                                <!-- Cadre fixe 170x250 aux coins arrondis, qui rogne l'image -->
                                                                 <Border Width="170" Height="250" CornerRadius="8"
                                                                         ClipToBounds="True">
                                                                         <Grid>
+                                                                                <!-- Jaquette : remplit tout le cadre (rognée si besoin) -->
                                                                                 <Image Source="{Binding Cover}" Stretch="UniformToFill"/>
+                                                                                <!-- Bandeau semi-transparent avec le titre, collé en bas -->
                                                                                 <Border VerticalAlignment="Bottom" Background="#AA000000" Padding="8">
                                                                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
                                                                                                    TextWrapping="Wrap"/>
@@ -66,23 +83,35 @@
                                                 </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <!-- Les infos de chaques jeu -->
+
+                                <!-- ===== Zone 3 : panneau latéral (fiche, modification, ajout) ===== -->
                                 <StackPanel Grid.Column="1" Spacing="16">
+
+                                        <!-- Fiche du jeu sélectionné. Masquée tant qu'aucun jeu n'est choisi.
+                                        Son DataContext est défini dans le code (AfficherJeu). -->
                                         <StackPanel x:Name="PanneauInfos" x:DataType="local:Game" Spacing="6" IsVisible="False">
                                                 <Image Source="{Binding Cover}" Height="260" Stretch="Uniform"/>
                                                 <TextBlock Text="{Binding Name}" FontSize="22" FontWeight="Bold" TextWrapping="Wrap"/>
+                                                <!-- StringFormat ajoute un libellé devant la valeur -->
                                                 <TextBlock Text="{Binding Date, StringFormat='Sortie : {0}'}"/>
                                                 <TextBlock Text="{Binding Genre, StringFormat='Genre : {0}'}" TextWrapping="Wrap"/>
                                                 <TextBlock Text="{Binding Rating, StringFormat='Note : {0}'}"/>
                                                 <TextBlock Text="{Binding Synopsis}" TextWrapping="Wrap"/>
+                                                <!-- Case "Disponible" : liaison dans les deux sens ;
+                                                le clic déclenche aussi la sauvegarde (ClikCheck) -->
                                                 <CheckBox Content="Disponible"
                                                           IsChecked="{Binding Disponible, Mode=TwoWay}"
                                                           Click="ClikCheck"/>
                                                 <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <!-- Affiche le formulaire de modification -->
                                                         <Button Content="Modifier" Click="ModiferAfficher"/>
+                                                        <!-- Retire le jeu de la bibliothèque -->
                                                         <Button Content="Supprimer" Click="Supprimer"/>
                                                 </StackPanel>
                                         </StackPanel>
+
+                                        <!-- Formulaire de modification : visible seulement après un clic sur "Modifier".
+                                        Les champs sont préremplis depuis le code (AfficherJeu). -->
                                         <StackPanel x:Name="ModifierInfos" Spacing="5" IsVisible="False">
                                                 <TextBox x:Name="GameName" PlaceholderText="Name?" TextWrapping="Wrap"/>
                                                 <TextBox x:Name="GameDate" PlaceholderText="Date de sortie?" TextWrapping="Wrap"/>
@@ -90,8 +119,16 @@
                                                 <TextBox x:Name="GameSynopsis" PlaceholderText="Synopsis?" TextWrapping="Wrap"/>
                                                 <TextBox x:Name="GameRating" PlaceholderText="Rating?" TextWrapping="Wrap"/>
                                                 <TextBox x:Name="GameUrl" PlaceholderText="Url Image?" TextWrapping="Wrap"/>
+                                                <!-- Applique les changements, sauvegarde et recharge la jaquette si l'adresse a changé -->
                                                 <Button Content="Enregistrer les modifications" Click="Modifier"/>
                                         </StackPanel>
+
+                                        <!-- Bouton qui affiche le formulaire d'ajout (méthode AfficherAjouterInfos) -->
+                                        <Button Content="Ajouter"
+                                                Click="AfficherAjouterInfos" />
+
+                                        <!-- Formulaire d'ajout : masqué au départ, visible après un clic sur "Ajouter".
+                                        Le nom est obligatoire ; les autres champs sont facultatifs. -->
                                         <StackPanel x:Name="Ajouterinfos" Spacing="5" IsVisible="False">
                                                 <TextBlock Text="Ajouter un jeu" FontWeight="Bold"/>
                                                 <TextBox x:Name="NomJeu" PlaceholderText="Name?" TextWrapping="Wrap"/>
@@ -99,8 +136,10 @@
                                                 <TextBox x:Name="GenreJeu" PlaceholderText="Genre?" TextWrapping="Wrap"/>
                                                 <TextBox x:Name="SynopsisJeu" PlaceholderText="Synopsis?" TextWrapping="Wrap"/>
                                                 <TextBox x:Name="JeuScore" PlaceholderText="Rating?" TextWrapping="Wrap"/>
+                                                <!-- Adresse web de l'image de jaquette -->
                                                 <TextBox x:Name="UrlJeu" PlaceholderText="Url Image?" TextWrapping="Wrap"/>
-                                                <Button Content="Valider l'Ajout" Click="Ajouter"/>
+                                                <!-- Valide l'ajout (refuse un nom déjà présent) -->
+                                                <Button Content="Valider l'ajout" Click="Ajouter"/>
                                         </StackPanel>
                                 </StackPanel>
                         </Grid>
