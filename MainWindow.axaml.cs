@@ -116,11 +116,11 @@ public partial class MainWindow : Window
     }
     private void ChargerJeux()
     {
-        string path = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
-        if (!File.Exists(path)) return;
+        
+        if (!File.Exists(LibPath)) return;
         try
         {
-            string json = File.ReadAllText(path);
+            string json = File.ReadAllText(LibPath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var game = JsonSerializer.Deserialize<ObservableCollection<Game>>(json, options);
             Games.Clear();
