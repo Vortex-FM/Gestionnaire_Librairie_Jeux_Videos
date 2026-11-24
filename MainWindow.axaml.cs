@@ -65,7 +65,6 @@ public partial class MainWindow : Window
 {
     public ObservableCollection<Game> Games { get; } = new();
     public ObservableCollection<Game> SearchResults { get; } = new();
-    private static string LibPath = Path.Combine(AppContext.BaseDirectory, "Librairie.json");
     private Game? _jeuselectionne;
     private static readonly HttpClient _http = CreerClient();
     public MainWindow()
@@ -252,23 +251,23 @@ public partial class MainWindow : Window
             jeu.Cover = await ChargerBitmapAsync(jeu.Url);
     }
     
-    //     private static string TrouverDossierProjet()
-    // {
-    //     var dossier = new DirectoryInfo(AppContext.BaseDirectory);
+        private static string TrouverDossierProjet()
+    {
+        var dossier = new DirectoryInfo(AppContext.BaseDirectory);
 
-    //     while (dossier != null)
-    //     {
-    //         if (dossier.GetFiles("*.csproj").Length > 0)
-    //             return dossier.FullName;
+        while (dossier != null)
+        {
+            if (dossier.GetFiles("*.csproj").Length > 0)
+                return dossier.FullName;
 
-    //         dossier = dossier.Parent;
-    //     }
+            dossier = dossier.Parent;
+        }
 
-    //     return AppContext.BaseDirectory;
-    // }
+        return AppContext.BaseDirectory;
+    }
 
-    // private static string LibPath = Path.Combine(
-    //     TrouverDossierProjet(), "Librairie.json");
+    private static string LibPath = Path.Combine(
+        TrouverDossierProjet(), "Librairie.json");
 
     // permet de créer un librairie.json au même endroit que le .csproj
 }
